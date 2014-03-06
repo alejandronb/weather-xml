@@ -43,8 +43,6 @@ temp_min = []
 viento_km = []
 direccion_viento = []
 
-#r = request.get .........
-#elemento_raiz = etree.fromstring(r.text.encode("utf-8"))
 
 
 url = 'http://api.openweathermap.org/data/2.5/weather'
@@ -54,12 +52,23 @@ url = 'http://api.openweathermap.org/data/2.5/weather'
 for ciudad in ciudades:
 	parametros = {'q':'%s,spain' % ciudad,'mode':'xml','units':'metric','lang':'es'}
 	peticion = requests.get(url,params=parametros)
-	#elemento_raiz = etree.fromstring(peticion.text.encode("utf-8"))
-	print peticion.text
+	raiz = etree.fromstring(peticion.text.encode("utf-8"))
+
+	city = raiz.find("city")
+	ncity = city.attrib["name"]
+	temperature = raiz.find("temperature")
+	tempmax = temperature.attrib["max"]
+	tempmin = temperature.attrib["min"]
+	viento_dir = raiz.find("wind/direction")
+	direccion = viento_dir.attrib["name"]
+	viento_vel = raiz.find("wind/speed")
+	velocidad = viento_vel.attrib["value"]
+	temp_max.append(tempmax)
+	temp_min.append(tempmin)
+	viento_km.append(velocidad)
+	direccion_viento.append(cardinalidad(direccion))
 #	viento = 
 #	direccion = 
-#	tempmax = 
-#	tempmin = 
 #	maxima = round(tempmax - 273,1)
 #	minima = round(tempmin - 273,1)
 #	vientokm = round(viento*1.61)
@@ -69,9 +78,9 @@ for ciudad in ciudades:
 #	direccion_viento.append(cardinalidad(direccion))
 
 
-#template = Template(html)
-#template = template.render(ciudades=ciudades,maxima=temp_max,minima=temp_min,viento=viento_km,direccion=direccion_viento)
-#salida.write(template)
-#webbrowser.open("salida.html")
+template = Template(html)
+template = template.render(ciudades=ciudades,maxima=temp_max,minima=temp_min,viento=viento_km,direccion=direccion_viento)
+salida.write(template)
+webbrowser.open("salida.html")
 
 
