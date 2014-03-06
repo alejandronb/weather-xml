@@ -8,7 +8,7 @@ import requests
 from lxml import etree
 
 
-ciudades = ['Almeria','Cadiz','Cordoba','Huelva','Jaen','Malaga','Sevilla']
+ciudades = ['Almeria','Cadiz','Cordoba','Huelva','Jaen','Sevilla']
 f = open("plantilla.html","r")
 salida = open("salida.html","w")
 html = ''
@@ -60,13 +60,14 @@ for ciudad in ciudades:
 	tempmax = temperature.attrib["max"]
 	tempmin = temperature.attrib["min"]
 	viento_dir = raiz.find("wind/direction")
-	direccion = viento_dir.attrib["name"]
+	direccion = viento_dir.attrib["value"]
 	viento_vel = raiz.find("wind/speed")
 	velocidad = viento_vel.attrib["value"]
 	temp_max.append(tempmax)
 	temp_min.append(tempmin)
 	viento_km.append(velocidad)
 	direccion_viento.append(cardinalidad(direccion))
+	print peticion.text
 #	viento = 
 #	direccion = 
 #	maxima = round(tempmax - 273,1)
